@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import ListUsersComponent from "../components/ListUsersComponent";
 import HomeComponent from "../components/HomeComponent";
 import { UserContext } from '../hooks/authContext';
+import UserComponent from '../components/UserComponent';
 
 const PrivateRoute = () => {
     const { user } = useContext(UserContext);
@@ -15,6 +16,8 @@ const PrivateRoute = () => {
     return (
         <Routes>
             <Route path="/" element={<HomeComponent />} />
+            <Route path="/user" element={<UserComponent />} />
+            <Route path="/user/:userId" element={<UserComponent />} />
             <Route path="/users" element={<ListUsersComponent />} />
         </Routes>
     )
