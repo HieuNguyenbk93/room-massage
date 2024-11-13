@@ -21,6 +21,22 @@ class UsersController {
         }
     }
 
+    GetByUserName = async (userName) => {
+        try {
+            const result = await UsersService.getByUserName(userName);
+            return {
+                data: result,
+                ok: true
+            }
+        }
+        catch (error) {
+            return {
+                meassage: error,
+                ok: false
+            }
+        }
+    }
+
     GetByUserId = async (userId) => {
         try {
             const result = await UsersService.getUserById(userId);
@@ -50,7 +66,21 @@ class UsersController {
         }
     }
 
-    CreateUser = () => {}
+    CreateUser = async (user) => {
+        try {
+            await UsersService.createUser(user);
+            return {
+                ok: true
+            }
+        }
+        catch (error) {
+            return {
+                meassage: error,
+                ok: false
+            }
+        }
+        
+    }
 
     UpdateUser = async (id, user) => {
         try {

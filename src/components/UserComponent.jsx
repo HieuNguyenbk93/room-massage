@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Form, Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 
 const UserSchema = Yup.object().shape({
     name: Yup.string().min(6, 'Too Short!').required('Required'),
@@ -43,6 +44,16 @@ const UserComponent = () => {
             console.log(result);
             if (result.ok) {
                 navigate("/business");
+            }
+        }
+        else {
+            const result = await UsersController.CreateUser(values);
+            if (result.ok) {
+                toast.success('Thêm mới thành công');
+                navigate("/business");
+            }
+            else {
+                toast.error('Thêm mới thất bại');
             }
         }
     }

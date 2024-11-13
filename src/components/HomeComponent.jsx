@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 const HomeComponent = () => {
 	const navigate = useNavigate();
+    const [textSearch, setTextSearch] = useState('');
 	const [listUsers, setListUsers] = useState([]);
 	const [userSelected, setUserSelected] = useState({
 		name: '',
@@ -18,7 +19,6 @@ const HomeComponent = () => {
 	useEffect(() => {
 		const callApi = async () => {
 			const result = await UsersController.GetAllUsers();
-			console.log(result);
 			setListUsers(result.data);
 		}
 		try {
@@ -29,13 +29,25 @@ const HomeComponent = () => {
 		}
 	}, []);
 
+    const onPressSearch = async () => {
+        console.log(textSearch);
+        const result = await UsersController.GetByUserName(textSearch);
+        console.log(result);
+    }
+
 	const goToUserProfile = (id) => {
 		navigate(`/business/user/${id}`);
 	  };
 
 	const onPressChecin = (user) => {
-		setIsModalCheckin(true);
-		setUserSelected(user);
+        if (user.countRoom <= 0) {
+            toast.warning('Khách đã hết số buổi');
+            return;
+        }
+        else {
+            setIsModalCheckin(true);
+            setUserSelected(user);
+        }
 	};
 	const onPressDelete = (user) => {
 		setIsModalDelete(true);
@@ -77,15 +89,25 @@ const HomeComponent = () => {
 					<h3>Quản lý khách hàng</h3>
 				</div>
 				<div className="col-md-6 col-sm-12 text-end">
-					<button type="button" className="btn btn-info me-2" onClick={() => goToUserProfile("")}>
+					<button type="button" className="btn btn-info" onClick={() => goToUserProfile("")} >
 						Thêm mới
 					</button>
 				</div>
 			</div>
 			
-			<div>
-				
+			<div className="row my-2">
+                <div className="col-md-6 col sm-12"></div>
+                <div className="col-md-6 col sm-12">
+                    <div className="d-flex">
+                        <input className="form-control me-2" type="search" placeholder="Search"
+                            value={textSearch}
+                            onChange={(e) => setTextSearch(e.target.value)}
+                        />
+                        <button className="btn btn-outline-success" onClick={() => onPressSearch()}>Search</button>
+                    </div>
+                </div>
 			</div>
+
 			<table className="table table-success table-striped">
 				<thead>
 					<tr>

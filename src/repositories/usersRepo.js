@@ -1,11 +1,20 @@
 import { db } from "../firebaseConfig"
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore"
 
 const usersCollection = collection(db, "users");
 
 class UsersRepo {
     getAllUsers = () => {
         return getDocs(usersCollection);
+    }
+
+    getByUserName = (userName) => {
+        // const q = query(usersCollection,
+        //     where('name', '>=', userName),
+        //     where('name', '<=', userName + '\uf8ff'));
+        console.log(userName);
+        const q = query(usersCollection, where("countRoom", ">=", 5));
+        return getDocs(q);
     }
 
     getByUserId = (userId) => {

@@ -14,6 +14,20 @@ class UsersService {
         return usersData;
     }
 
+    async getByUserName(userName) {
+        const data = await UsersRepo.getByUserId(userName);
+        console.log(data);
+        const usersData = data.docs.map(user => {
+            let _user = JSON.parse(JSON.stringify(user.data()));
+            let item = {
+                ..._user,
+                id: user.id
+            }
+            return item;
+        })
+        return usersData;
+    }
+
     async getUserById(userId) {
         const data = await UsersRepo.getByUserId(userId);
         return data.data();
@@ -23,8 +37,8 @@ class UsersService {
         await UsersRepo.deleteUser(userId);
     }
 
-    async createUser() {
-
+    async createUser(user) {
+        await UsersRepo.addUser(user);
     }
 
     async updateUser(id, user) {

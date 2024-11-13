@@ -26,7 +26,7 @@ function App() {
               <a className="nav-link active" aria-current="page" href="/business/">Home</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/business/users">User</a>
+              <a className="nav-link" href="/business/log">Log</a>
             </li>
           </ul>
           <form className="d-flex" role="search">

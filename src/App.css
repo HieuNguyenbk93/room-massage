@@ -1,2 +1,6 @@
 #root {
 }
+
+.no-mr{
+    margin-right: 0px !important;
+}
