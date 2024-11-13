@@ -3,6 +3,8 @@ import { useContext } from 'react'
 import { UserContext } from './hooks/authContext'
 import AppRoute from './routers/AppRoute'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 // import Login from './components/Login';
 
 function App() {
@@ -36,6 +38,9 @@ function App() {
     <div className="container">
       <AppRoute />
     </div>
+    <ToastContainer
+      position='bottom-right'
+    />
     </>
   )
 }

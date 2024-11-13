@@ -13,6 +13,25 @@ class UsersService {
         })
         return usersData;
     }
+
+    async getUserById(userId) {
+        const data = await UsersRepo.getByUserId(userId);
+        return data.data();
+    }
+
+    async deleteUser(userId) {
+        const result = await UsersRepo.deleteUser(userId);
+        console.log(result);
+        return result;
+    }
+
+    async createUser() {
+
+    }
+
+    async updateUser(id, user) {
+        await UsersRepo.updateUser(id, user);
+    }
 }
 
 export default new UsersService();
