@@ -20,9 +20,7 @@ class UsersService {
     }
 
     async deleteUser(userId) {
-        const result = await UsersRepo.deleteUser(userId);
-        console.log(result);
-        return result;
+        await UsersRepo.deleteUser(userId);
     }
 
     async createUser() {

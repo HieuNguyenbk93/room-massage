@@ -2,7 +2,7 @@ const Modal = ({ show, onClose, children, title, onSave }) => {
   if (!show) return null; // Don't render the modal if "show" is false
 
   return (
-    <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" aria-hidden="true">
+    <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.7)' }} tabIndex="-1" aria-hidden="true">
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">

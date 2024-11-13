@@ -41,9 +41,18 @@ const HomeComponent = () => {
 		setIsModalDelete(true);
 		setUserSelected(user);
 	}
-	const onConfirmDelete = () => {
-		toast.success('Xóa thành công');
+	const onConfirmDelete = async () => {
+		const result = await UsersController.DeleteUser(userSelected.id);
+		if (result.ok) {
+			const resultList = await UsersController.GetAllUsers();
+			setListUsers(resultList.data);
+			toast.success('Xóa thành công');
+		} else {
+			toast.error('Xóa thất bại');
+		}
+		setIsModalDelete(false);
 	}
+
 	const onConfirmCheckin = async () => {
 		const user = {
 			name: userSelected.name,
