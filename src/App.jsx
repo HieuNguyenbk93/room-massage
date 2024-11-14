@@ -10,7 +10,12 @@ import { ToastContainer } from 'react-toastify';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
-  const { user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
+
+  // const onPressLogout = () => {
+  //   console.log(user);
+
+  // }
   
   return (
     <>
@@ -24,15 +29,16 @@ function App() {
           <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"> 
             {/* style="--bs-scroll-height: 100px;"> */}
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/business/">Home</a>
+              <a className="nav-link active" aria-current="page" href="/business/home">Home</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/business/log">Log</a>
             </li>
           </ul>
-          <form className="d-flex" role="search">
-            <button className="btn btn-outline-success" type="submit">Logout</button>
-          </form>
+          <div className="d-flex align-items-center">
+            <>{user.name ? <span>Xin chào {user.name} &nbsp;</span> : ''}</>
+            <button className="btn btn-outline-success" onClick={logout}>Logout</button>
+          </div>
         </div>
       </div>
     </nav>
