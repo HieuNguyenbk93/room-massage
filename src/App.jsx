@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { UserContext } from './hooks/authContext'
 import AppRoute from './routers/AppRoute'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 // import Login from './components/Login';

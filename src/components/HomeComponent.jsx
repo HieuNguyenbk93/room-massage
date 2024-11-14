@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import UsersController from "../controllers/usersController";
+import CheckinController from "../controllers/checkinCotroller";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
@@ -29,10 +30,19 @@ const HomeComponent = () => {
 		}
 	}, []);
 
+	const handleKeyDown = (event) => {
+		if (event.key === 'Enter') {
+		  event.preventDefault(); // Prevents the form from submitting if wrapped in a form
+		  onPressSearch();
+		}
+	  };
+
     const onPressSearch = async () => {
         console.log(textSearch);
         const result = await UsersController.GetByUserName(textSearch);
-        console.log(result);
+        if (result.ok) {
+			setListUsers(result.data);
+		}
     }
 
 	const goToUserProfile = (id) => {
@@ -66,17 +76,26 @@ const HomeComponent = () => {
 	}
 
 	const onConfirmCheckin = async () => {
-		const user = {
-			name: userSelected.name,
-			yearOfBirth: userSelected.yearOfBirth,
-			countRoom: userSelected.countRoom - 1,
-		}
-		const result = await UsersController.UpdateUser(userSelected.id, user);
+		// const user = {
+		// 	name: userSelected.name,
+		// 	yearOfBirth: userSelected.yearOfBirth,
+		// 	countRoom: userSelected.countRoom - 1,
+		// }
+		// const result = await UsersController.UpdateUser(userSelected.id, user);
+		// if (result.ok) {
+		// 	const resultList = await UsersController.GetAllUsers();
+		// 	setListUsers(resultList.data);
+		// 	toast.success('Check in thành công');
+		// } else {
+		// 	toast.error('Check in thất bại');
+		// }
+		const result = await CheckinController.CheckinByUserId(userSelected.id)
 		if (result.ok) {
 			const resultList = await UsersController.GetAllUsers();
 			setListUsers(resultList.data);
 			toast.success('Check in thành công');
-		} else {
+		}
+		else {
 			toast.error('Check in thất bại');
 		}
 		setIsModalCheckin(false);
@@ -102,6 +121,7 @@ const HomeComponent = () => {
                         <input className="form-control me-2" type="search" placeholder="Search"
                             value={textSearch}
                             onChange={(e) => setTextSearch(e.target.value)}
+							onKeyDown={handleKeyDown}
                         />
                         <button className="btn btn-outline-success" onClick={() => onPressSearch()}>Search</button>
                     </div>

@@ -9,11 +9,11 @@ class UsersRepo {
     }
 
     getByUserName = (userName) => {
-        // const q = query(usersCollection,
-        //     where('name', '>=', userName),
-        //     where('name', '<=', userName + '\uf8ff'));
-        console.log(userName);
-        const q = query(usersCollection, where("countRoom", ">=", 5));
+        const q = query(usersCollection,
+            where('name', '>=', userName),
+            where('name', '<=', userName + '\uf8ff')
+            // where('name', '==', userName)
+        );
         return getDocs(q);
     }
 

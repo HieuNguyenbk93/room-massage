@@ -15,7 +15,7 @@ class UsersService {
     }
 
     async getByUserName(userName) {
-        const data = await UsersRepo.getByUserId(userName);
+        const data = await UsersRepo.getByUserName(userName);
         console.log(data);
         const usersData = data.docs.map(user => {
             let _user = JSON.parse(JSON.stringify(user.data()));
