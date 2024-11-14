@@ -4,7 +4,7 @@ const UserContext = createContext({name: '', auth: false});
 
 // eslint-disable-next-line react/prop-types
 const UserProvider = ({children}) => {
-    const [user, setUser] = useState({ name: '', auth: true });
+    const [user, setUser] = useState({ name: '', auth: false });
 
     const login = (name) => {
         setUser(() => ({
