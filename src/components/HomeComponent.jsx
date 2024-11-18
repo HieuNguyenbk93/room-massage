@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import Modal from "./Modal";
 import UsersController from "../controllers/usersController";
 import CheckinController from "../controllers/checkinCotroller";
 import { useNavigate } from 'react-router-dom';
@@ -79,19 +78,6 @@ const HomeComponent = () => {
 	}
 
 	const onConfirmCheckin = async () => {
-		// const user = {
-		// 	name: userSelected.name,
-		// 	yearOfBirth: userSelected.yearOfBirth,
-		// 	countRoom: userSelected.countRoom - 1,
-		// }
-		// const result = await UsersController.UpdateUser(userSelected.id, user);
-		// if (result.ok) {
-		// 	const resultList = await UsersController.GetAllUsers();
-		// 	setListUsers(resultList.data);
-		// 	toast.success('Check in thành công');
-		// } else {
-		// 	toast.error('Check in thất bại');
-		// }
 		const result = await CheckinController.CheckinByUserId(userSelected.id)
 		if (result.ok) {
 			const resultList = await UsersController.GetAllUsers();
