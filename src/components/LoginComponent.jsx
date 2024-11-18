@@ -12,19 +12,16 @@ const LoginComponent = () => {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
+      console.log(result);
       const userData = result.user;
       console.log(userData);
-      login(userData.displayName || 'Unknown');
+      const token = await userData.getIdTokenResult();
+      // console.log(token);
+      login(userData, token.token);
       navigate('/business/home');
     } catch (error) {
       console.error("Error during login: ", error);
     }
-    // const provider = new GoogleAuthProvider();
-    //   signInWithPopup(auth, provider).then(async (result) => {
-    //       console.log(result);
-    //   })
-    // console.log(user)
-    // login("Hieu");
   }
   return (
     <>

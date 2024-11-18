@@ -36,7 +36,7 @@ function App() {
             </li>
           </ul>
           <div className="d-flex align-items-center">
-            <>{user.name ? <span>Xin chào {user.name} &nbsp;</span> : ''}</>
+            <>{user ? <span>Xin chào {user.name} &nbsp;</span> : ''}</>
             <button className="btn btn-outline-success" onClick={logout}>Logout</button>
           </div>
         </div>
