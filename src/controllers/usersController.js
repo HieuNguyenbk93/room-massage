@@ -1,3 +1,4 @@
+import { HTTP_STATUS } from "../constants/httpStatus";
 import UsersService from "../services/usersService";
 
 // export const GetAllUsers = () => {
@@ -8,15 +9,24 @@ class UsersController {
     GetAllUsers = async () => {
         try {
             const result = await UsersService.getAllUsers();
-            return {
-                data: result,
-                ok: true
+            if (result.success) {
+                return {
+                    data: result.data,
+                    status: HTTP_STATUS.OK
+                }
             }
+            else {
+                return {
+                    message: result.message,
+                    status: HTTP_STATUS.INTERNAL_SERVER_ERROR
+                }
+            }
+            
         }
         catch (error) {
             return {
-                meassage: error,
-                ok: false
+                message: error,
+                status: HTTP_STATUS.INTERNAL_SERVER_ERROR
             }
         }
     }
@@ -24,15 +34,23 @@ class UsersController {
     GetByUserName = async (userName) => {
         try {
             const result = await UsersService.getByUserName(userName);
-            return {
-                data: result,
-                ok: true
+            if (result.success) {
+                return {
+                    data: result.data,
+                    status: HTTP_STATUS.OK
+                }
+            }
+            else {
+                return {
+                    message: result.message,
+                    status: HTTP_STATUS.INTERNAL_SERVER_ERROR
+                }
             }
         }
         catch (error) {
             return {
-                meassage: error,
-                ok: false
+                message: error,
+                status: HTTP_STATUS.INTERNAL_SERVER_ERROR
             }
         }
     }
@@ -40,43 +58,66 @@ class UsersController {
     GetByUserId = async (userId) => {
         try {
             const result = await UsersService.getUserById(userId);
-            return {
-                data: result,
-                ok: true
+            if (result.success) {
+                return {
+                    data: result.data,
+                    status: HTTP_STATUS.OK
+                }
             }
+            else {
+                return {
+                    message: result.message,
+                    status: HTTP_STATUS.INTERNAL_SERVER_ERROR
+                }
+            }
+            
         } catch (error) {
             return {
-                meassage: error,
-                ok: false
+                message: error,
+                status: HTTP_STATUS.INTERNAL_SERVER_ERROR
             }
         }
     }
 
     DeleteUser = async (userId) => {
         try {
-            await UsersService.deleteUser(userId);
-            return {
-                ok: true
+            const result = await UsersService.deleteUser(userId);
+            if (result.success) {
+                return {
+                    status: HTTP_STATUS.OK
+                }
+            } else {
+                return {
+                    message: result.message,
+                    status: HTTP_STATUS.INTERNAL_SERVER_ERROR
+                }
             }
         } catch (error) {
             return {
                 meassage: error,
-                ok: false
+                status: HTTP_STATUS.INTERNAL_SERVER_ERROR
             }
         }
     }
 
     CreateUser = async (user) => {
         try {
-            await UsersService.createUser(user);
-            return {
-                ok: true
+            const result = await UsersService.createUser(user);
+            if (result.success) {
+                return {
+                    status: HTTP_STATUS.OK
+                }
+            } else {
+                return {
+                    message: result.message,
+                    status: HTTP_STATUS.INTERNAL_SERVER_ERROR
+                }
             }
         }
         catch (error) {
             return {
                 meassage: error,
-                ok: false
+                status: HTTP_STATUS.INTERNAL_SERVER_ERROR
             }
         }
         
@@ -84,16 +125,22 @@ class UsersController {
 
     UpdateUser = async (id, user) => {
         try {
-            await UsersService.updateUser(id, user);
-            return {
-                ok: true
+            const result = await UsersService.updateUser(id, user);
+            if (result.success) {
+                return {
+                    status: HTTP_STATUS.OK
+                }
+            } else {
+                return {
+                    message: result.message,
+                    status: HTTP_STATUS.INTERNAL_SERVER_ERROR
+                }
             }
         }
         catch (error) {
-            // console.log(error);
             return {
                 meassage: error,
-                ok: false
+                status: HTTP_STATUS.INTERNAL_SERVER_ERROR
             }
         }
         
