@@ -120,7 +120,7 @@ const HomeComponent = () => {
 								onClick={() => goToUserProfile(user.id)}
 								
 							/>,
-							<DeleteOutlined key="Xóa" title="Xóa" style={{fontSize: 20}}
+							<DeleteOutlined key="delete" title="Xóa" style={{fontSize: 20}}
 								onClick={() => onPressDelete(user)}
 							/>
 						]}
