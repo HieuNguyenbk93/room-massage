@@ -38,53 +38,6 @@ const LogComponent = () => {
 
     return (
         <>
-        {/* {isLoading ? 
-        <>
-        <div className="d-flex justify-content-center modal fade show py-5" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
-            <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </div>
-        </div>
-        </> 
-        :
-        <></>
-        }
-        <h3>Lịch sử checkin</h3>
-        <div>
-            {listLog.map((log, index) => {
-                return (
-                    <p key={index}>
-                        {log.index} - {log.time} - Checkin cho khách {log.userName}
-                    </p>
-                )
-            })}
-        </div>
-        <div className="d-flex justify-content-between align-items-start">
-            <label>
-                <span>Hiển thị:&nbsp;</span>
-                <select value={pageSize} onChange={changePageSize}>
-                    <option value={2}>2</option>
-                    <option value={5}>5</option>
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                </select>
-                &nbsp; Tổng số {total} bản ghi
-            </label>
-            <nav aria-label="Page navigation example">
-                <ul className="pagination">
-                    <li className={`page-item ${isDisablePre ? 'disabled': ''}`} onClick={handlerPre}>
-                        <a className="page-link" href="#">
-                            Previous
-                        </a>
-                    </li>
-                    <li className={`page-item ${isDisableNext ? 'disabled': ''}`} onClick={handlerNext}>
-                        <a className="page-link" href="#">
-                            Next
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div> */}
         <h3>Lịch sử checkin</h3>
         <Table dataSource={listLog} pagination={false} loading={isLoading}>
             <Column
@@ -109,6 +62,7 @@ const LogComponent = () => {
             onChange={(page) => setPageIndex(page-1)}
             showSizeChanger
             onShowSizeChange={(current, size) => setPageSize(size)}
+            style={{marginTop: '10px'}}
         />
         </>
     )

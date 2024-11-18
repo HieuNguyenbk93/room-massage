@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { Button, Card, Col, Input, Row, Avatar, Modal } from 'antd';
 import { UserAddOutlined, EditOutlined, DeleteOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { HTTP_STATUS } from "../constants/httpStatus";
 
 const { Search } = Input;
 
@@ -41,7 +42,7 @@ const HomeComponent = () => {
         console.log(valueSearch);
 		setLoading(true);
 		const result = await UsersController.GetByUserName(valueSearch);
-		if (result.ok) {
+		if (result.status == HTTP_STATUS.OK) {
 			setListUsers(result.data);
 			setLoading(false);
 		}
@@ -67,7 +68,7 @@ const HomeComponent = () => {
 	}
 	const onConfirmDelete = async () => {
 		const result = await UsersController.DeleteUser(userSelected.id);
-		if (result.ok) {
+		if (result.status == HTTP_STATUS.OK) {
 			const resultList = await UsersController.GetAllUsers();
 			setListUsers(resultList.data);
 			toast.success('Xóa thành công');
@@ -79,7 +80,7 @@ const HomeComponent = () => {
 
 	const onConfirmCheckin = async () => {
 		const result = await CheckinController.CheckinByUserId(userSelected.id)
-		if (result.ok) {
+		if (result.status == HTTP_STATUS.OK) {
 			const resultList = await UsersController.GetAllUsers();
 			setListUsers(resultList.data);
 			toast.success('Check in thành công');
@@ -107,7 +108,7 @@ const HomeComponent = () => {
 				<Search placeholder="Tìm kiếm theo tên" allowClear onSearch={onPressSearch} />
 			</Col>
 		</Row>
-		<Row gutter={[16, 16]} wrap>
+		<Row gutter={[16, 16]} wrap style={{marginTop: '10px'}}>
 			{listUsers.map((user, index) => (
 				<Col xs={24} sm={12} md={8} lg={6} key={index}>
 					<Card loading={loading}

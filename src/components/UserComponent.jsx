@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { Button, Row } from "antd";
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import { HTTP_STATUS } from "../constants/httpStatus";
 
 const UserSchema = Yup.object().shape({
     name: Yup.string().min(6, 'Too Short!').required('Required'),
@@ -44,13 +45,13 @@ const UserComponent = () => {
         if (userId) {
             const result = await UsersController.UpdateUser(userId, values);
             console.log(result);
-            if (result.ok) {
+            if (result.status == HTTP_STATUS.OK) {
                 navigate("/business/home");
             }
         }
         else {
             const result = await UsersController.CreateUser(values);
-            if (result.ok) {
+            if (result.status == HTTP_STATUS.OK) {
                 toast.success('Thêm mới thành công');
                 navigate("/business/home");
             }
