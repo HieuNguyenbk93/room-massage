@@ -6,45 +6,65 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-// import Login from './components/Login';
+import { Layout, Menu, Avatar, Dropdown } from 'antd';
+import { HomeOutlined, HistoryOutlined, LogoutOutlined } from '@ant-design/icons';
+
+const { Header, Content, Footer } = Layout;
 
 function App() {
-  // eslint-disable-next-line no-unused-vars
   const { user, logout } = useContext(UserContext);
 
-  // const onPressLogout = () => {
-  //   console.log(user);
-
-  // }
+  const menu = (
+    <Menu>
+      {/* <Menu.Item key="1" icon={<UserOutlined />}>
+        Profile
+      </Menu.Item> */}
+      <Menu.Item key="2" icon={<LogoutOutlined />} onClick={logout}>
+        Logout
+      </Menu.Item>
+    </Menu>
+  );
   
   return (
     <>
-    <nav className="navbar navbar-expand-lg bg-body-tertiary bg-primary">
-      <div className="container-fluid">
-        <a className="navbar-brand" href="/Login">Manage Rooms</a>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarScroll">
-          <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"> 
-            {/* style="--bs-scroll-height: 100px;"> */}
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/business/home">Home</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/business/log">Log</a>
-            </li>
-          </ul>
-          <div className="d-flex align-items-center">
-            <>{user ? <span>Xin chào {user.name} &nbsp;</span> : ''}</>
-            <button className="btn btn-outline-success" onClick={logout}>Logout</button>
-          </div>
+    <Layout>
+      <Header style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+        <div style={{width: '200px'}}>
+        <Menu theme="dark" mode="horizontal">
+          <Menu.Item key="1" icon={<HomeOutlined />}>
+            <a href="/business/home">Home</a>
+          </Menu.Item>
+          <Menu.Item key="2" icon={<HistoryOutlined />}>
+            <a href="/business/log">History</a>
+          </Menu.Item>
+        </Menu>
         </div>
-      </div>
-    </nav>
-    <div className="container">
-      <AppRoute />
-    </div>
+        
+        {user ?
+        <>
+          <div>
+          <span style={{ color: 'white' }}>Xin chào {user.name} </span>
+          <Dropdown overlay={menu} trigger={['click']}>
+            <Avatar
+              src={user.photo}
+              alt="User Avatar"
+              style={{ marginRight: '16px' }}
+            />
+          </Dropdown>
+          </div>
+        </>
+        : <></>}
+        
+      </Header>
+      <Content style={{ padding: '0 50px' }}>
+        <div style={{ padding: 24, minHeight: 380 }}>
+          <AppRoute />
+        </div>
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>
+        Ant Design ©{new Date().getFullYear()} Created by NBH
+      </Footer>
+    </Layout>
     <ToastContainer
       position='bottom-right'
     />

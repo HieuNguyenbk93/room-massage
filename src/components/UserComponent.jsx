@@ -5,6 +5,8 @@ import { Form, Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
+import { Button, Row } from "antd";
+import { ArrowLeftOutlined } from '@ant-design/icons';
 
 const UserSchema = Yup.object().shape({
     name: Yup.string().min(6, 'Too Short!').required('Required'),
@@ -43,14 +45,14 @@ const UserComponent = () => {
             const result = await UsersController.UpdateUser(userId, values);
             console.log(result);
             if (result.ok) {
-                navigate("/business");
+                navigate("/business/home");
             }
         }
         else {
             const result = await UsersController.CreateUser(values);
             if (result.ok) {
                 toast.success('Thêm mới thành công');
-                navigate("/business");
+                navigate("/business/home");
             }
             else {
                 toast.error('Thêm mới thất bại');
@@ -60,7 +62,11 @@ const UserComponent = () => {
 
     return (
         <>
-        <h3>{title}</h3>
+        <Row>
+            <Button icon={<ArrowLeftOutlined />} shape="circle" onClick={() => navigate(-1)}/>
+            <h3>&nbsp;{title}</h3>
+        </Row>
+        
         <Formik
             enableReinitialize
             initialValues={user}

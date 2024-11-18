@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import Modal from "./Modal";
+// import Modal from "./Modal";
 import UsersController from "../controllers/usersController";
 import CheckinController from "../controllers/checkinCotroller";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
+import { Button, Card, Col, Input, Row, Avatar, Modal } from 'antd';
+import { UserAddOutlined, EditOutlined, DeleteOutlined, CheckCircleOutlined } from '@ant-design/icons';
+
+const { Search } = Input;
 
 const HomeComponent = () => {
 	const navigate = useNavigate();
-    const [textSearch, setTextSearch] = useState('');
 	const [listUsers, setListUsers] = useState([]);
 	const [userSelected, setUserSelected] = useState({
 		name: '',
@@ -16,38 +19,38 @@ const HomeComponent = () => {
 	});
 	const [isModalCheckin, setIsModalCheckin] = useState(false);
 	const [isModalDelete, setIsModalDelete] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		const callApi = async () => {
 			const result = await UsersController.GetAllUsers();
 			setListUsers(result.data);
+			setLoading(false);
 		}
 		try {
+			setLoading(true);
 			callApi();
+			setLoading(false);
 		}
 		catch (err) {
+			setLoading(false);
 			console.log(err);
 		}
 	}, []);
 
-	const handleKeyDown = (event) => {
-		if (event.key === 'Enter') {
-		  event.preventDefault(); // Prevents the form from submitting if wrapped in a form
-		  onPressSearch();
-		}
-	  };
-
-    const onPressSearch = async () => {
-        console.log(textSearch);
-        const result = await UsersController.GetByUserName(textSearch);
-        if (result.ok) {
+	const onPressSearch = async (valueSearch) => {
+        console.log(valueSearch);
+		setLoading(true);
+		const result = await UsersController.GetByUserName(valueSearch);
+		if (result.ok) {
 			setListUsers(result.data);
+			setLoading(false);
 		}
     }
 
 	const goToUserProfile = (id) => {
 		navigate(`/business/user/${id}`);
-	  };
+	};
 
 	const onPressChecin = (user) => {
         if (user.countRoom <= 0) {
@@ -103,75 +106,59 @@ const HomeComponent = () => {
 
 	return (
 		<>
-			<div className="row mt-1">
-				<div className="col-md-6 com-sm-12">
-					<h3>Quản lý khách hàng</h3>
-				</div>
-				<div className="col-md-6 col-sm-12 text-end">
-					<button type="button" className="btn btn-info" onClick={() => goToUserProfile("")} >
-						Thêm mới
-					</button>
-				</div>
-			</div>
-			
-			<div className="row my-2">
-                <div className="col-md-6 col sm-12"></div>
-                <div className="col-md-6 col sm-12">
-                    <div className="d-flex">
-                        <input className="form-control me-2" type="search" placeholder="Search"
-                            value={textSearch}
-                            onChange={(e) => setTextSearch(e.target.value)}
-							onKeyDown={handleKeyDown}
-                        />
-                        <button className="btn btn-outline-success" onClick={() => onPressSearch()}>Search</button>
-                    </div>
-                </div>
-			</div>
-
-			<table className="table table-success table-striped">
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">Tên</th>
-						<th scope="col">Năm sinh</th>
-						<th scope="col">Số buổi</th>
-						<th scope="col">Chức năng</th>
-					</tr>
-				</thead>
-				<tbody>
-					{listUsers.map((user, index) => {
-						return (
-							<tr key={index}>
-								<th scope="row">{index + 1}</th>
-								<td>{user.name}</td>
-								<td>{user.yearOfBirth}</td>
-								<td>{user.countRoom}</td>
-								<td>
-									<button type="button" className="btn btn-success me-2" onClick={() => onPressChecin(user)}>Check in</button>
-									<button type="button" className="btn btn-danger me-2" onClick={() => goToUserProfile(user.id)}>
-										Sửa
-									</button>
-									<button type="button" className="btn btn-warning" onClick={() => onPressDelete(user)}>Xóa</button>
-								</td>
-							</tr>
-						)
-					})}
-				</tbody>
-			</table>
-			<Modal
-				show={isModalCheckin}
-				onClose={() => setIsModalCheckin(false)}
-				onSave={() => onConfirmCheckin()}
-				title="CHECK IN">
-				<p>Bạn có chắc chắn check in cho khách {userSelected.name}</p>
-			</Modal>
-			<Modal
-				show={isModalDelete}
-				onClose={() => setIsModalDelete(false)}
-				onSave={() => onConfirmDelete()}
-				title="XÓA">
-				<p>Bạn có chắc chắn muốn xóa khách {userSelected.name}</p>
-			</Modal>
+		
+		<Row gutter={16}>
+			<Col xs={24} sm={24} md={12} lg={12}>
+				<h3>Quản lý khách hàng</h3>
+			</Col>
+			<Col xs={24} sm={24} md={12} lg={12} style={{ textAlign: 'right' }}>
+				<Button type="primary" icon={<UserAddOutlined />} onClick={() => goToUserProfile("")}>Thêm mới</Button>
+			</Col>
+		</Row>
+		<Row style={{ textAlign: 'right' }}>
+			<Col xs={24} sm={24} md={12} lg={12}></Col>
+			<Col xs={24} sm={24} md={12} lg={12} style={{ textAlign: 'right' }}>
+				<Search placeholder="Tìm kiếm theo tên" allowClear onSearch={onPressSearch} />
+			</Col>
+		</Row>
+		<Row gutter={[16, 16]} wrap>
+			{listUsers.map((user, index) => (
+				<Col xs={24} sm={12} md={8} lg={6} key={index}>
+					<Card loading={loading}
+						actions ={[
+							<CheckCircleOutlined key="checkin" title="Check in" style={{fontSize: 20}}
+								onClick={() => onPressChecin(user)}
+							/>,
+							<EditOutlined key="edit" title="Sửa" style={{fontSize: 20}}
+								onClick={() => goToUserProfile(user.id)}
+								
+							/>,
+							<DeleteOutlined key="Xóa" title="Xóa" style={{fontSize: 20}}
+								onClick={() => onPressDelete(user)}
+							/>
+						]}
+					>
+						<Card.Meta
+						avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />}
+						title={user.name}
+						description={
+							<>
+							<p>Năm sinh: <b>{user.yearOfBirth}</b></p>
+							<p>Số buổi: <b>{user.countRoom}</b></p>
+							</>
+						}
+						/>
+					</Card>
+				</Col>
+				
+			))}
+		</Row>
+		<Modal title="XÓA" open={isModalDelete} onOk={onConfirmDelete} onCancel={() => setIsModalDelete(false)}>
+			<p>Bạn có chắc chắn muốn xóa khách <b><i>{userSelected.name}</i></b></p>
+		</Modal>
+		<Modal title="CHECKIN" open={isModalCheckin} onOk={onConfirmCheckin} onCancel={() => setIsModalCheckin(false)}>
+			<p>Bạn có chắc chắn check in cho khách {userSelected.name} <b><i>{userSelected.name}</i></b></p>
+		</Modal>
 		</>
 	)
 }
